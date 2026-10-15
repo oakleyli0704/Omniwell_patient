@@ -19,6 +19,12 @@
         /* 隱藏捲軸 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 浮水印底圖模擬 (使用純CSS漸層或Icon模擬) */
+        .bg-placeholder-door { background-image: radial-gradient(circle, #fcd34d22 10%, transparent 10%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23d9770633" stroke-width="2"><path d="M18 20V5a2 2 0 00-2-2H8a2 2 0 00-2 2v15m0 0h12M8 20H4m14 0h4M14 12v.01"/></svg>'); background-position: center; background-repeat: no-repeat; background-size: 50%; }
+        .bg-placeholder-center { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23d9770633" stroke-width="2"><rect x="3" y="8" width="18" height="8" rx="2"/><path d="M3 16v2a2 2 0 002 2h14a2 2 0 002-2v-2"/></svg>'); background-position: center; background-repeat: no-repeat; background-size: 50%; }
+        .bg-placeholder-left { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23d9770633" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>'); background-position: center; background-repeat: no-repeat; background-size: 50%; }
+        .bg-placeholder-right { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23d9770633" stroke-width="2"><path d="M9 3H3v6M15 21h6v-6M3 3l7 7M21 21l-7-7"/></svg>'); background-position: center; background-repeat: no-repeat; background-size: 50%; }
     </style>
 </head>
 <body class="bg-[#F7F9FA] text-gray-700 font-sans">
@@ -26,18 +32,24 @@
         
         <!-- ================= 首頁 (Hub) ================= -->
         <div id="page-home" class="page-section page-active">
-            <!-- 乾淨明亮的 Header (白底)，完美融合去背 Logo -->
             <header class="bg-white p-4 sticky top-0 z-50 shadow-sm border-b border-gray-100 flex justify-between items-center">
-                <!-- 使用 CSS mix-blend-multiply 達到完美去背效果 -->
                 <img src="S__500121625.jpg" class="h-10 mix-blend-multiply" alt="Omniwell">
-                <span class="text-xs bg-teal-50 text-teal-700 border border-teal-200 px-3 py-1.5 rounded-full font-bold shadow-sm">王奶奶 的專屬空間</span>
+                <div class="flex items-center gap-2">
+                    <span data-i18n="patient_space" class="text-xs bg-teal-50 text-teal-700 border border-teal-200 px-2 py-1 rounded-full font-bold shadow-sm whitespace-nowrap">王奶奶 的專屬空間</span>
+                    <select id="lang-switch" onchange="changeLang(this.value)" class="bg-gray-50 text-gray-600 text-xs font-bold border border-gray-200 rounded-lg px-1 py-1 focus:outline-none focus:border-teal-400">
+                        <option value="zh">中</option>
+                        <option value="en">EN</option>
+                        <option value="vi">VN</option>
+                        <option value="id">ID</option>
+                    </select>
+                </div>
             </header>
 
             <div class="p-5 space-y-6">
                 <!-- 區塊 1: 服務進度追蹤 -->
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                     <h2 class="text-lg font-bold text-gray-700 mb-5 flex items-center gap-2">
-                        <span class="w-2 h-6 bg-teal-400 rounded-full"></span>今日陪診進度
+                        <span class="w-2 h-6 bg-teal-400 rounded-full"></span><span data-i18n="progress_title">今日陪診進度</span>
                     </h2>
                     <div class="flex justify-between items-center relative px-2">
                         <div class="absolute left-2 top-1/2 w-[calc(100%-1rem)] h-1 bg-gray-100 -z-10 transform -translate-y-1/2"></div>
@@ -62,7 +74,7 @@
                     </div>
                 </section>
 
-                <!-- 區塊 2: 陪診日誌 & 健康圖表 -->
+                <!-- 區塊 2: 陪診日誌 -->
                 <section class="bg-[#F0F7F7] rounded-2xl shadow-sm border border-teal-50 p-5">
                     <h2 class="text-lg font-bold text-teal-800 mb-4 flex items-center gap-2">
                         <span class="w-2 h-6 bg-teal-500 rounded-full"></span>即時動態與健康趨勢
@@ -77,30 +89,28 @@
                     </div>
                 </section>
 
-                <!-- 區塊 3: 三大功能入口 (顏色調柔和) -->
+                <!-- 區塊 3: 三大功能入口 -->
                 <section class="space-y-4 pt-2">
                     <button onclick="navTo('page-health')" class="w-full flex items-center p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition transform">
                         <div class="w-14 h-14 bg-teal-50 text-teal-500 rounded-full flex items-center justify-center text-3xl mr-4 shadow-sm">🩺</div>
                         <div class="text-left flex-1">
-                            <h3 class="text-xl font-bold text-gray-700">新增健康數據</h3>
+                            <h3 data-i18n="nav_vitals" class="text-xl font-bold text-gray-700">新增健康數據</h3>
                             <p class="text-sm text-gray-400 mt-1">生命徵象、血糖量測紀錄</p>
                         </div>
                         <div class="text-gray-300 font-bold text-2xl">＞</div>
                     </button>
-
                     <button onclick="navTo('page-service')" class="w-full flex items-center p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition transform">
                         <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-3xl mr-4 shadow-sm">🛒</div>
                         <div class="text-left flex-1">
-                            <h3 class="text-xl font-bold text-gray-700">服務申請</h3>
+                            <h3 data-i18n="nav_service" class="text-xl font-bold text-gray-700">服務申請</h3>
                             <p class="text-sm text-gray-400 mt-1">空間規劃、陪診、急件提問</p>
                         </div>
                         <div class="text-gray-300 font-bold text-2xl">＞</div>
                     </button>
-
                     <button onclick="navTo('page-feedback')" class="w-full flex items-center p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 active:scale-95 transition transform">
                         <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center text-3xl mr-4 shadow-sm">💬</div>
                         <div class="text-left flex-1">
-                            <h3 class="text-xl font-bold text-gray-700">意見回覆與留言</h3>
+                            <h3 data-i18n="nav_feedback" class="text-xl font-bold text-gray-700">意見回覆與留言</h3>
                             <p class="text-sm text-gray-400 mt-1">對服務的建議或一般回饋</p>
                         </div>
                         <div class="text-gray-300 font-bold text-2xl">＞</div>
@@ -109,12 +119,12 @@
             </div>
         </div>
 
-        <!-- ================= 子頁面 1: 新增健康數據 (柔和綠藍色系) ================= -->
+        <!-- ================= 子頁面 1: 新增健康數據 ================= -->
         <div id="page-health" class="page-section">
             <header class="bg-white text-teal-800 p-4 sticky top-0 z-50 shadow-sm border-b border-gray-100 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <button onclick="navTo('page-home')" class="text-teal-600 font-bold text-lg bg-teal-50 px-3 py-1.5 rounded-lg active:bg-teal-100">＜ 返回</button>
-                    <h1 class="text-xl font-bold">新增健康數據</h1>
+                    <button onclick="navTo('page-home')" class="text-teal-600 font-bold text-lg bg-teal-50 px-3 py-1.5 rounded-lg active:bg-teal-100">＜ <span data-i18n="btn_back">返回</span></button>
+                    <h1 data-i18n="nav_vitals" class="text-xl font-bold">新增健康數據</h1>
                 </div>
                 <img src="S__500121625.jpg" class="h-8 mix-blend-multiply opacity-50" alt="Logo">
             </header>
@@ -122,8 +132,8 @@
             <div class="p-5 space-y-6">
                 <!-- 紀錄類型切換 -->
                 <div class="flex gap-3 mb-2">
-                    <button id="tab-vitals" class="flex-1 py-4 text-lg font-bold bg-teal-500 text-white rounded-2xl shadow-md transition active:scale-95" onclick="switchDataTab('vitals')">生命徵象</button>
-                    <button id="tab-sugar" class="flex-1 py-4 text-lg font-bold bg-gray-100 text-gray-500 rounded-2xl shadow-sm transition active:scale-95" onclick="switchDataTab('sugar')">血糖</button>
+                    <button id="tab-vitals" data-i18n="tab_vitals" class="flex-1 py-4 text-lg font-bold bg-teal-500 text-white rounded-2xl shadow-md transition active:scale-95" onclick="switchDataTab('vitals')">生命徵象</button>
+                    <button id="tab-sugar" data-i18n="tab_sugar" class="flex-1 py-4 text-lg font-bold bg-gray-100 text-gray-500 rounded-2xl shadow-sm transition active:scale-95" onclick="switchDataTab('sugar')">血糖</button>
                 </div>
 
                 <!-- 生命徵象區塊 -->
@@ -194,7 +204,7 @@
                     <button onclick="submitToast()" class="w-full py-5 mt-4 bg-teal-500 text-white text-2xl font-bold rounded-2xl shadow-lg shadow-teal-200 active:scale-95 transition transform">送出紀錄</button>
                 </div>
 
-                <!-- 血糖區塊 (預設隱藏) -->
+                <!-- 血糖區塊 -->
                 <div id="section-sugar" class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 space-y-6 hidden">
                     <div class="flex flex-col">
                         <label class="text-gray-600 font-bold mb-2 text-lg">測量時間</label>
@@ -222,12 +232,12 @@
             </div>
         </div>
 
-        <!-- ================= 子頁面 2: 服務申請 (柔和橘黃色系) ================= -->
+        <!-- ================= 子頁面 2: 服務申請 ================= -->
         <div id="page-service" class="page-section">
             <header class="bg-white text-amber-800 p-4 sticky top-0 z-50 shadow-sm border-b border-gray-100 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <button onclick="navTo('page-home')" class="text-amber-600 font-bold text-lg bg-amber-50 px-3 py-1.5 rounded-lg active:bg-amber-100">＜ 返回</button>
-                    <h1 class="text-xl font-bold">服務申請</h1>
+                    <button onclick="navTo('page-home')" class="text-amber-600 font-bold text-lg bg-amber-50 px-3 py-1.5 rounded-lg active:bg-amber-100">＜ <span data-i18n="btn_back">返回</span></button>
+                    <h1 data-i18n="nav_service" class="text-xl font-bold">服務申請</h1>
                 </div>
                 <img src="S__500121625.jpg" class="h-8 mix-blend-multiply opacity-50" alt="Logo">
             </header>
@@ -240,16 +250,134 @@
                         <h2 class="text-lg font-bold text-amber-800 flex items-center gap-2">🏠 居家出院空間規劃</h2>
                         <span class="text-amber-400 font-bold text-xl">▼</span>
                     </button>
-                    <div id="card-space" class="p-5 border-t border-amber-50 hidden space-y-5">
-                        <p class="text-sm text-gray-500">請點選您需要的設備評估 (可複選)：</p>
-                        <div class="flex flex-wrap gap-3">
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">病床</button>
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">呼吸器</button>
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">氧氣機</button>
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">扶手</button>
+                    <div id="card-space" class="p-5 border-t border-amber-50 hidden space-y-6">
+                        
+                        <!-- 步驟 1 -->
+                        <div>
+                            <p class="text-sm font-bold text-amber-800 mb-2">1. 個案目前活動狀態 (單選)</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" class="activity-btn py-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl text-sm transition active:scale-95" onclick="selectSingle(this, '.activity-btn', 'activity-val', '長期臥床', 'amber')">長期臥床</button>
+                                <button type="button" class="activity-btn py-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl text-sm transition active:scale-95" onclick="selectSingle(this, '.activity-btn', 'activity-val', '輪椅移位', 'amber')">輪椅移位</button>
+                                <button type="button" class="activity-btn py-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl text-sm transition active:scale-95" onclick="selectSingle(this, '.activity-btn', 'activity-val', '可攙扶行走', 'amber')">可攙扶行走</button>
+                            </div>
+                            <input type="hidden" id="activity-val">
                         </div>
-                        <textarea rows="2" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50" placeholder="其他空間需求補充..."></textarea>
-                        <button onclick="submitToast()" class="w-full py-4 bg-amber-500 text-white text-lg font-bold rounded-2xl shadow-md shadow-amber-200 active:bg-amber-600 transition transform active:scale-95">提交規劃申請</button>
+
+                        <!-- 步驟 2 -->
+                        <div>
+                            <p class="text-sm font-bold text-amber-800 mb-2">2. 預計評估空間 (可複選)</p>
+                            <div class="flex gap-2">
+                                <button type="button" class="flex-1 py-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl text-sm transition active:scale-95" onclick="toggleSpaceType(this, 'equip-bed')">臥室</button>
+                                <button type="button" class="flex-1 py-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl text-sm transition active:scale-95" onclick="toggleSpaceType(this, 'equip-living')">客廳</button>
+                                <button type="button" class="flex-1 py-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl text-sm transition active:scale-95" onclick="toggleSpaceType(this, 'equip-bath')">衛浴</button>
+                            </div>
+                        </div>
+
+                        <!-- 步驟 3: 動態展開設備 -->
+                        <div class="space-y-3">
+                            <p class="text-sm font-bold text-amber-800 mb-1">3. 預計配置照護設備</p>
+                            
+                            <!-- 臥室設備 -->
+                            <div id="equip-bed" class="hidden p-3 bg-[#fffaf0] rounded-xl border border-amber-100">
+                                <p class="text-xs font-bold text-amber-700 mb-2">🛏️ 臥室需求：</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">醫療電動床</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">減壓氣墊床</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">床邊安全扶手</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">床邊便盆椅</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">居家呼吸器</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">氧氣製造機</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">抽痰機</button>
+                                </div>
+                            </div>
+
+                            <!-- 客廳設備 -->
+                            <div id="equip-living" class="hidden p-3 bg-[#fffaf0] rounded-xl border border-amber-100">
+                                <p class="text-xs font-bold text-amber-700 mb-2">🛋️ 客廳需求：</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">門檻斜坡板</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">高背起身椅</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">輪椅凝膠坐墊</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">走道牆面扶手</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">防滑地墊</button>
+                                </div>
+                            </div>
+
+                            <!-- 衛浴設備 -->
+                            <div id="equip-bath" class="hidden p-3 bg-[#fffaf0] rounded-xl border border-amber-100">
+                                <p class="text-xs font-bold text-amber-700 mb-2">🚿 衛浴需求：</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">洗澡便盆兩用椅</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">隱形防滑施工</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">馬桶旁扶手</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">淋浴區L型扶手</button>
+                                    <button class="py-1.5 px-3 border-2 border-gray-200 text-gray-500 rounded-full text-xs font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">加高馬桶座</button>
+                                </div>
+                            </div>
+                            <p id="equip-hint" class="text-xs text-gray-400 italic mt-1">(請先在上方勾選預計評估的空間)</p>
+                        </div>
+
+                        <!-- 步驟 4: 4圖1影上傳區塊 -->
+                        <div class="pt-2 border-t border-dashed border-amber-200 mt-4">
+                            <div class="flex justify-between items-end mb-3">
+                                <div>
+                                    <p class="text-sm font-bold text-amber-800 mb-1">4. 空間環境照 (4圖 + 1影)</p>
+                                    <p class="text-xs text-gray-500">協助 AI 精準重建 3D 空間與電源配置</p>
+                                </div>
+                            </div>
+                            
+                            <!-- 圖解範例按鈕 -->
+                            <button onclick="openTutorial()" class="w-full mb-4 py-2.5 bg-gradient-to-r from-amber-100 to-amber-50 text-amber-800 border border-amber-200 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-amber-100 active:scale-95 transition shadow-sm">
+                                💡 不知道怎麼拍？點我看圖解範例
+                            </button>
+
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <!-- 圖 1: 門外 -->
+                                <div class="bg-placeholder-door border-2 border-dashed border-amber-300 rounded-2xl p-3 flex flex-col items-center justify-center bg-amber-50 relative cursor-pointer hover:bg-amber-100 active:scale-95 transition min-h-[110px]" onclick="document.getElementById('file-img-1').click()">
+                                    <span class="text-2xl mb-1 drop-shadow-md">🚪</span>
+                                    <span class="text-xs text-amber-900 font-bold text-center bg-white/70 px-1 rounded">1. 入口動線</span>
+                                    <span class="text-[10px] text-amber-700 text-center mt-1 font-medium bg-white/70 px-1 rounded">(站門外往內拍，含門檻)</span>
+                                    <input type="file" id="file-img-1" accept="image/*" class="hidden">
+                                </div>
+                                <!-- 圖 2: 定點正拍 -->
+                                <div class="bg-placeholder-center border-2 border-dashed border-amber-300 rounded-2xl p-3 flex flex-col items-center justify-center bg-amber-50 relative cursor-pointer hover:bg-amber-100 active:scale-95 transition min-h-[110px]" onclick="document.getElementById('file-img-2').click()">
+                                    <span class="text-2xl mb-1 drop-shadow-md">🛏️</span>
+                                    <span class="text-xs text-amber-900 font-bold text-center bg-white/70 px-1 rounded">2. 定點正拍</span>
+                                    <span class="text-[10px] text-amber-700 text-center mt-1 font-medium bg-white/70 px-1 rounded">(進房定點，正對主空間)</span>
+                                    <input type="file" id="file-img-2" accept="image/*" class="hidden">
+                                </div>
+                                <!-- 圖 3: 定點左拍 -->
+                                <div class="bg-placeholder-left border-2 border-dashed border-amber-300 rounded-2xl p-3 flex flex-col items-center justify-center bg-amber-50 relative cursor-pointer hover:bg-amber-100 active:scale-95 transition min-h-[110px]" onclick="document.getElementById('file-img-3').click()">
+                                    <span class="text-2xl mb-1 drop-shadow-md">↖️</span>
+                                    <span class="text-xs text-amber-900 font-bold text-center bg-white/70 px-1 rounded">3. 定點左拍</span>
+                                    <span class="text-[10px] text-amber-700 text-center mt-1 font-medium bg-white/70 px-1 rounded">(原地左轉，畫面微重疊)</span>
+                                    <input type="file" id="file-img-3" accept="image/*" class="hidden">
+                                </div>
+                                <!-- 圖 4: 定點右拍 -->
+                                <div class="bg-placeholder-right border-2 border-dashed border-amber-300 rounded-2xl p-3 flex flex-col items-center justify-center bg-amber-50 relative cursor-pointer hover:bg-amber-100 active:scale-95 transition min-h-[110px]" onclick="document.getElementById('file-img-4').click()">
+                                    <span class="text-2xl mb-1 drop-shadow-md">↗️</span>
+                                    <span class="text-xs text-amber-900 font-bold text-center bg-white/70 px-1 rounded">4. 定點右拍</span>
+                                    <span class="text-[10px] text-amber-700 text-center mt-1 font-medium bg-white/70 px-1 rounded">(原地右轉，畫面微重疊)</span>
+                                    <input type="file" id="file-img-4" accept="image/*" class="hidden">
+                                </div>
+                            </div>
+                            
+                            <!-- 動態錄影 -->
+                            <div class="border-2 border-dashed border-amber-400 rounded-2xl p-4 flex flex-col items-center justify-center bg-[#fff8ed] relative cursor-pointer hover:bg-amber-100 active:scale-95 transition" onclick="document.getElementById('file-video-1').click()">
+                                <span class="text-3xl mb-1 drop-shadow-md">🎥</span>
+                                <span class="text-sm text-amber-900 font-bold">5. 特寫與環繞錄影</span>
+                                <span class="text-xs text-amber-700 text-center mt-1 font-medium">請特別近拍<span class="font-bold text-red-500">預計插座</span>，並環繞房間一圈<br><span class="font-bold text-gray-500">(建議控制在 15 秒內)</span></span>
+                                <input type="file" id="file-video-1" accept="video/*" class="hidden">
+                            </div>
+                        </div>
+
+                        <!-- 步驟 5: 備註 -->
+                        <div>
+                            <p class="text-sm font-bold text-amber-800 mb-2">5. 備註補充</p>
+                            <textarea rows="2" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50" placeholder="其他空間需求或個案狀況補充..."></textarea>
+                        </div>
+
+                        <button onclick="submitToast()" class="w-full py-4 mt-2 bg-amber-500 text-white text-lg font-bold rounded-2xl shadow-md shadow-amber-200 active:bg-amber-600 transition transform active:scale-95">提交規劃申請</button>
                     </div>
                 </div>
 
@@ -264,21 +392,7 @@
                             <label class="font-bold text-gray-600 mb-2 block">預計陪診時間</label>
                             <input type="datetime-local" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50 text-gray-700">
                         </div>
-                        <div>
-                            <label class="font-bold text-gray-600 mb-2 block">醫院地點</label>
-                            <div class="flex gap-2 mb-3 overflow-x-auto no-scrollbar pb-1">
-                                <button class="shrink-0 py-2 px-4 bg-gray-100 text-gray-500 rounded-xl text-sm font-bold active:bg-amber-100 transition" onclick="fillInput('hosp-input', '台大醫院')">台大醫院</button>
-                                <button class="shrink-0 py-2 px-4 bg-gray-100 text-gray-500 rounded-xl text-sm font-bold active:bg-amber-100 transition" onclick="fillInput('hosp-input', '榮民總醫院')">榮民總醫院</button>
-                                <button class="shrink-0 py-2 px-4 bg-gray-100 text-gray-500 rounded-xl text-sm font-bold active:bg-amber-100 transition" onclick="fillInput('hosp-input', '長庚醫院')">長庚醫院</button>
-                            </div>
-                            <input type="text" id="hosp-input" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50" placeholder="手動輸入或點選上方快速按鈕">
-                        </div>
-                        <div>
-                            <label class="font-bold text-gray-600 mb-2 block">看診科別</label>
-                            <input type="text" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50" placeholder="例如：心臟內科">
-                        </div>
-                        <textarea rows="2" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50" placeholder="陪診注意事項補充..."></textarea>
-                        <button onclick="submitToast()" class="w-full py-4 bg-amber-500 text-white text-lg font-bold rounded-2xl shadow-md shadow-amber-200 active:bg-amber-600 transition transform active:scale-95">預約陪診</button>
+                        <button onclick="submitToast()" class="w-full py-4 bg-amber-500 text-white text-lg font-bold rounded-2xl shadow-md shadow-amber-200 active:scale-95">預約陪診</button>
                     </div>
                 </div>
 
@@ -291,24 +405,20 @@
                     <div id="card-edu" class="p-5 border-t border-amber-50 hidden space-y-5">
                         <p class="text-sm text-gray-500">請點選需要的衛教項目 (可複選)：</p>
                         <div class="flex flex-wrap gap-3">
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">鼻胃管灌食</button>
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">尿管護理</button>
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">氣切照護</button>
-                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95 transition" onclick="toggleMulti(this, 'amber')">其他</button>
+                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95" onclick="toggleMulti(this, 'amber')">鼻胃管灌食</button>
+                            <button class="multi-select py-2.5 px-5 border-2 border-gray-200 text-gray-500 rounded-full font-bold active:scale-95" onclick="toggleMulti(this, 'amber')">尿管護理</button>
                         </div>
-                        <textarea rows="2" class="w-full p-4 border-2 border-gray-200 rounded-2xl focus:border-amber-400 bg-gray-50" placeholder="其他衛教需求補充..."></textarea>
-                        <button onclick="submitToast()" class="w-full py-4 bg-amber-500 text-white text-lg font-bold rounded-2xl shadow-md shadow-amber-200 active:bg-amber-600 transition transform active:scale-95">預約衛教指導</button>
+                        <button onclick="submitToast()" class="w-full py-4 bg-amber-500 text-white text-lg font-bold rounded-2xl shadow-md shadow-amber-200 active:scale-95">預約衛教指導</button>
                     </div>
                 </div>
 
-                <!-- 4. 即時問題 (柔和橘色，取代刺眼的紅色) -->
+                <!-- 4. 即時問題 (預設折疊) -->
                 <div class="bg-white rounded-3xl shadow-sm border border-orange-100 overflow-hidden">
                     <button class="w-full p-5 flex justify-between items-center bg-gradient-to-r from-orange-50 to-white active:bg-orange-100 transition" onclick="toggleCard('card-urgent')">
                         <h2 class="text-lg font-bold text-orange-700 flex items-center gap-2">💬 即時問題諮詢</h2>
                         <span class="text-orange-400 font-bold text-xl">▼</span>
                     </button>
-                    <div id="card-urgent" class="p-5 border-t border-orange-50 space-y-5"> <!-- 預設開啟展示 -->
-                        
+                    <div id="card-urgent" class="p-5 border-t border-orange-50 space-y-5 hidden"> 
                         <!-- 方案狀態與配額 -->
                         <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-sm">
                             <p class="font-bold text-gray-600 mb-2">✅ 目前方案：<span class="font-normal text-gray-500">安心陪伴型 (09:00-18:00)</span></p>
@@ -343,12 +453,12 @@
             </div>
         </div>
 
-        <!-- ================= 子頁面 3: 意見回覆與留言 (柔和綠色系) ================= -->
+        <!-- ================= 子頁面 3: 意見回覆與留言 ================= -->
         <div id="page-feedback" class="page-section">
             <header class="bg-white text-emerald-800 p-4 sticky top-0 z-50 shadow-sm border-b border-gray-100 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <button onclick="navTo('page-home')" class="text-emerald-600 font-bold text-lg bg-emerald-50 px-3 py-1.5 rounded-lg active:bg-emerald-100">＜ 返回</button>
-                    <h1 class="text-xl font-bold">意見回覆與留言</h1>
+                    <button onclick="navTo('page-home')" class="text-emerald-600 font-bold text-lg bg-emerald-50 px-3 py-1.5 rounded-lg active:bg-emerald-100">＜ <span data-i18n="btn_back">返回</span></button>
+                    <h1 data-i18n="nav_feedback" class="text-xl font-bold">意見回覆與留言</h1>
                 </div>
                 <img src="S__500121625.jpg" class="h-8 mix-blend-multiply opacity-50" alt="Logo">
             </header>
@@ -357,13 +467,78 @@
                 <div class="bg-emerald-50 text-emerald-700 p-5 rounded-2xl text-sm leading-relaxed border border-emerald-100 font-medium">
                     這是一個免費的意見交流區。無論是對於我們服務的建議，或是對於陪診人員的回饋，都歡迎您在這裡留言告訴我們。您的回饋是我們進步的動力！
                 </div>
-                
                 <div class="flex flex-col">
                     <label class="font-bold text-gray-600 mb-3 text-lg px-1">留言內容</label>
-                    <textarea rows="6" class="w-full p-5 border-2 border-gray-200 rounded-3xl text-lg focus:border-emerald-400 focus:outline-none bg-gray-50" placeholder="請寫下您的建議或想對我們說的話..."></textarea>
+                    <textarea rows="6" class="w-full p-5 border-2 border-gray-200 rounded-3xl text-lg focus:border-emerald-400 focus:outline-none bg-gray-50" placeholder="請寫下您的建議..."></textarea>
                 </div>
-
                 <button onclick="submitToast()" class="w-full py-5 mt-4 bg-emerald-500 text-white text-2xl font-bold rounded-2xl shadow-lg shadow-emerald-200 active:scale-95 transition transform">送出留言</button>
+            </div>
+        </div>
+
+        <!-- ================= 互動教學彈出視窗 (Modal) ================= -->
+        <div id="tutorial-modal" class="fixed inset-0 bg-gray-900/60 z-[100] hidden flex-col items-center justify-center p-5 opacity-0 transition-opacity duration-300">
+            <div class="bg-white rounded-3xl w-full max-w-sm shadow-2xl relative max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300" id="tutorial-content">
+                <!-- 關閉按鈕 -->
+                <button onclick="closeTutorial()" class="absolute top-4 right-4 bg-gray-100 text-gray-500 hover:text-gray-800 w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold active:scale-95 transition">&times;</button>
+                
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">📸 AI 建模拍照教學</h3>
+                    <p class="text-sm text-gray-500 mb-5">為了讓系統精準判斷空間與家具，請參考以下拍法：</p>
+                    
+                    <!-- 俯視圖解 (純CSS繪製) -->
+                    <div class="bg-amber-50 rounded-2xl p-4 mb-6 border border-amber-100 relative h-40 flex items-center justify-center overflow-hidden">
+                        <!-- 房間框 -->
+                        <div class="w-full h-full border-4 border-gray-300 rounded-lg relative">
+                            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-10 h-2 bg-amber-50"></div> <!-- 門口空隙 -->
+                            <!-- 小人與視角箭頭 -->
+                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center z-10">
+                                <div class="w-6 h-6 bg-amber-500 rounded-full border-2 border-white mx-auto shadow-md"></div>
+                                <div class="text-[10px] font-bold text-amber-700 mt-1 bg-white/80 px-1 rounded">定點位置</div>
+                            </div>
+                            <!-- 正拍箭頭 -->
+                            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 -translate-y-full w-0.5 h-12 bg-amber-400">
+                                <div class="absolute -top-1 left-1/2 transform -translate-x-1/2 border-x-4 border-x-transparent border-b-6 border-b-amber-400"></div>
+                            </div>
+                            <!-- 左拍箭頭 -->
+                            <div class="absolute bottom-6 left-[40%] transform -translate-x-full -rotate-45 w-10 h-0.5 bg-teal-400"></div>
+                            <!-- 右拍箭頭 -->
+                            <div class="absolute bottom-6 right-[40%] transform translate-x-full rotate-45 w-10 h-0.5 bg-emerald-400"></div>
+                        </div>
+                    </div>
+
+                    <!-- 4 圖解說 -->
+                    <div class="space-y-4">
+                        <div class="flex gap-3 items-start">
+                            <div class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center border border-gray-200 shrink-0 shadow-inner">
+                                <span class="text-2xl">🚪</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-700 text-sm">1. 入口動線 (站門外)</h4>
+                                <p class="text-xs text-gray-500 mt-1">從門外拍進去，務必拍到地板門檻，確認輪椅好不好推。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <div class="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center border border-amber-200 shrink-0 shadow-inner">
+                                <span class="text-2xl">🛏️</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-amber-700 text-sm">2. 定點正拍 (站房內中心)</h4>
+                                <p class="text-xs text-amber-600 mt-1">進房後找一個定點站好，對著主空間（床）拍一張。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <div class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center border border-gray-200 shrink-0 shadow-inner">
+                                <span class="text-2xl">↔️</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-700 text-sm">3 & 4. 定點左右拍</h4>
+                                <p class="text-xs text-gray-500 mt-1"><span class="font-bold text-red-500">腳步不要動！</span>原地下半身不動，身體向左、右轉各拍一張，邊緣稍微重疊。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="closeTutorial()" class="w-full mt-6 py-4 bg-amber-500 text-white font-bold rounded-2xl shadow-lg shadow-amber-200 active:scale-95 transition transform">我懂了，開始拍照</button>
+                </div>
             </div>
         </div>
 
@@ -375,39 +550,51 @@
     </div>
 
     <script>
-        // --- 頁面切換邏輯 ---
+        // --- Modal 控制 ---
+        function openTutorial() {
+            const modal = document.getElementById('tutorial-modal');
+            const content = document.getElementById('tutorial-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // 小延遲觸發動畫
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeTutorial() {
+            const modal = document.getElementById('tutorial-modal');
+            const content = document.getElementById('tutorial-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        // --- i18n 多國語言 ---
+        const i18nData = {
+            zh: { "patient_space": "王奶奶 的專屬空間", "progress_title": "今日陪診進度", "nav_vitals": "新增健康數據", "nav_service": "服務申請", "nav_feedback": "意見回覆與留言", "btn_back": "返回" },
+            en: { "patient_space": "Mrs. Wang's Space", "progress_title": "Today's Progress", "nav_vitals": "Add Health Data", "nav_service": "Service Request", "nav_feedback": "Feedback & Comments", "btn_back": "Back" }
+        };
+
+        function changeLang(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18nData[lang] && i18nData[lang][key]) el.innerText = i18nData[lang][key];
+            });
+        }
+
         function navTo(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('page-active'));
             document.getElementById(pageId).classList.add('page-active');
             window.scrollTo(0, 0);
         }
 
-        // --- 子頁面 1: 健康數據切換 ---
-        function switchDataTab(tab) {
-            const btnVitals = document.getElementById('tab-vitals');
-            const btnSugar = document.getElementById('tab-sugar');
-            const secVitals = document.getElementById('section-vitals');
-            const secSugar = document.getElementById('section-sugar');
-
-            if(tab === 'vitals') {
-                btnVitals.className = "flex-1 py-4 text-lg font-bold bg-teal-500 text-white rounded-2xl shadow-md transition active:scale-95";
-                btnSugar.className = "flex-1 py-4 text-lg font-bold bg-gray-100 text-gray-500 rounded-2xl shadow-sm transition active:scale-95";
-                secVitals.classList.remove('hidden');
-                secSugar.classList.add('hidden');
-            } else {
-                btnSugar.className = "flex-1 py-4 text-lg font-bold bg-teal-500 text-white rounded-2xl shadow-md transition active:scale-95";
-                btnVitals.className = "flex-1 py-4 text-lg font-bold bg-gray-100 text-gray-500 rounded-2xl shadow-sm transition active:scale-95";
-                secSugar.classList.remove('hidden');
-                secVitals.classList.add('hidden');
-            }
-        }
-
-        // --- 共用：單選按鈕邏輯 (加入顏色參數) ---
         function selectSingle(btn, groupClass, hiddenInputId, val, colorPrefix) {
-            let activeBorder = `border-${colorPrefix}-400`;
-            let activeBg = `bg-${colorPrefix}-50`;
-            let activeText = `text-${colorPrefix}-600`;
-
+            let activeBorder = `border-${colorPrefix}-400`, activeBg = `bg-${colorPrefix}-50`, activeText = `text-${colorPrefix}-600`;
             document.querySelectorAll(groupClass).forEach(b => {
                 b.classList.remove(activeBorder, activeBg, activeText);
                 b.classList.add('border-gray-200', 'text-gray-500');
@@ -417,12 +604,8 @@
             document.getElementById(hiddenInputId).value = val;
         }
 
-        // --- 共用：複選標籤按鈕邏輯 (加入顏色參數) ---
         function toggleMulti(btn, colorPrefix) {
-            let activeBorder = `border-${colorPrefix}-400`;
-            let activeBg = `bg-${colorPrefix}-50`;
-            let activeText = `text-${colorPrefix}-600`;
-
+            let activeBorder = `border-${colorPrefix}-400`, activeBg = `bg-${colorPrefix}-50`, activeText = `text-${colorPrefix}-600`;
             if(btn.classList.contains(activeBorder)) {
                 btn.classList.remove(activeBorder, activeBg, activeText);
                 btn.classList.add('border-gray-200', 'text-gray-500');
@@ -432,39 +615,27 @@
             }
         }
 
-        // --- 填入醫院快捷鍵 ---
-        function fillInput(targetId, text) {
-            document.getElementById(targetId).value = text;
+        function toggleSpaceType(btn, spaceId) {
+            let activeBorder = 'border-amber-400', activeBg = 'bg-amber-50', activeText = 'text-amber-600';
+            let targetDiv = document.getElementById(spaceId);
+            let hint = document.getElementById('equip-hint');
+
+            if(btn.classList.contains(activeBorder)) {
+                btn.classList.remove(activeBorder, activeBg, activeText);
+                btn.classList.add('border-gray-200', 'text-gray-500');
+                targetDiv.classList.add('hidden');
+            } else {
+                btn.classList.remove('border-gray-200', 'text-gray-500');
+                btn.classList.add(activeBorder, activeBg, activeText);
+                targetDiv.classList.remove('hidden');
+                if(hint) hint.classList.add('hidden');
+            }
         }
 
-        // --- 快速備註 ---
-        function addNote(type, text) {
-            const noteInput = document.getElementById(`note-${type}`);
-            noteInput.value = noteInput.value ? noteInput.value + ` ${text}` : text;
-        }
-
-        // --- 折疊卡片 ---
         function toggleCard(cardId) {
-            const card = document.getElementById(cardId);
-            card.classList.toggle('hidden');
+            document.getElementById(cardId).classList.toggle('hidden');
         }
 
-        // --- Option B: 急件解鎖邏輯 ---
-        function unlockUrgentForm() {
-            document.getElementById('urgent-form-area').classList.remove('disabled-overlay');
-            const textarea = document.querySelector('#urgent-form-area textarea');
-            textarea.classList.remove('bg-gray-50');
-            textarea.classList.add('bg-white', 'border-orange-300', 'focus:border-orange-500');
-            
-            const submitBtn = document.getElementById('btn-urgent-submit');
-            submitBtn.classList.remove('hidden', 'bg-gray-300');
-            submitBtn.classList.add('bg-orange-500', 'shadow-md', 'shadow-orange-200');
-            submitBtn.innerText = "送出提問 (已解鎖)";
-            
-            document.getElementById('unlock-section').style.display = 'none';
-        }
-
-        // --- 模擬送出 Toast ---
         function submitToast() {
             const toast = document.getElementById('toast');
             toast.classList.remove('opacity-0');
@@ -472,33 +643,21 @@
             setTimeout(() => { navTo('page-home'); }, 600);
         }
 
-        // --- 初始化圖表與時間 ---
         window.onload = function() {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            const localDatetime = now.toISOString().slice(0, 16);
-            document.getElementById('vital-time').value = localDatetime;
-            document.getElementById('sugar-time').value = localDatetime;
-
-            const ctx = document.getElementById('bpChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['10/2', '10/3', '10/4', '10/5', '10/6', '10/7', '今日'],
-                    datasets: [
-                        { label: '收縮壓', data: [125, 130, 128, 135, 122, 120, 126], borderColor: '#2dd4bf', backgroundColor: '#99f6e4', tension: 0.4, fill: true },
-                        { label: '舒張壓', data: [80, 85, 82, 88, 78, 75, 80], borderColor: '#0ea5e9', tension: 0.4, fill: false }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } },
-                    scales: { 
-                        y: { suggestedMin: 60, suggestedMax: 150, grid: { color: '#f1f5f9' } },
-                        x: { grid: { display: false } }
-                    }
-                }
-            });
+            const ctx = document.getElementById('bpChart');
+            if(ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['10/2', '10/3', '10/4', '10/5', '10/6', '10/7', '今日'],
+                        datasets: [
+                            { label: '收縮壓', data: [125, 130, 128, 135, 122, 120, 126], borderColor: '#2dd4bf', backgroundColor: '#99f6e4', tension: 0.4, fill: true },
+                            { label: '舒張壓', data: [80, 85, 82, 88, 78, 75, 80], borderColor: '#0ea5e9', tension: 0.4, fill: false }
+                        ]
+                    },
+                    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { suggestedMin: 60, suggestedMax: 150 }, x: { grid: { display: false } } } }
+                });
+            }
         };
     </script>
 </body>
